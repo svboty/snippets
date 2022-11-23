@@ -2,6 +2,7 @@ from django.http import Http404, HttpResponseNotAllowed
 from django.shortcuts import get_object_or_404, render, redirect
 
 from MainApp.models import Snippet
+from MainApp.forms import SnippetForm
 
 
 def index_page(request):
@@ -11,14 +12,17 @@ def index_page(request):
 
 def add_snippet_page(request):
     if request.method == 'GET':
-        context = {'pagename': 'Добавление нового сниппета'}
+        form = SnippetForm()
+        context = {
+            'pagename': 'Добавление нового сниппета',
+            'form': form
+        }
         return render(request, 'pages/add_snippet.html', context)
     elif request.method == 'POST':
-        name = request.POST.get('name')
-        lang = request.POST.get('lang')
-        code = request.POST.get('code')
-        snippet = Snippet.objects.create(name=name, lang=lang, code=code)
-        return redirect(to='snippets-detail', snippet_id=snippet.id)
+        form = SnippetForm(request.POST)
+        if form.is_valid():
+            instance = form.save()
+        return redirect(to='snippets-detail', snippet_id=instance.id)
     else:
         return HttpResponseNotAllowed()
 
