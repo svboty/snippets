@@ -16,6 +16,7 @@
                         <th scope="col">ID</th>
                         <th scope="col">Название</th>
                         <th scope="col">Дата создания</th>
+                        <th scope="col">Автор</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -26,6 +27,7 @@
                             <a href="{% url 'snippets-detail' snippet.id %}">{{ snippet.name }}</a>
                         </td>
                         <td>{{ snippet.creation_date | date:"d.m.Y H:i" }}</td>
+                        <td>{{ snippet.user.username | default:"Anonimous"}}</td>
                     </tr>
                     {% endfor %}
 

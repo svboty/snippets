@@ -1,3 +1,4 @@
+from django.contrib import auth
 from django.http import Http404, HttpResponseNotAllowed
 from django.shortcuts import get_object_or_404, render, redirect
 
@@ -21,8 +22,11 @@ def add_snippet_page(request):
     elif request.method == 'POST':
         form = SnippetForm(request.POST)
         if form.is_valid():
-            instance = form.save()
-        return redirect(to='snippets-detail', snippet_id=instance.id)
+            instance = form.save(commit=False)
+            instance.user = request.user if request.user.is_authenticated else None
+            instance.save()
+            return redirect(to='snippets-detail', snippet_id=instance.id)
+        return render(request, 'add_snippet.html', {'form': form})
     else:
         return HttpResponseNotAllowed()
 
@@ -43,3 +47,22 @@ def snippet_detail(request, snippet_id):
         'snippet': snippet
     }
     return render(request, 'pages/snippet.html', context)
+
+
+def login_page(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = auth.authenticate(request, username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+            print(username, "/", password)
+    else:
+        raise Http404
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+def logout_page(request):
+    auth.logout(request)
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
