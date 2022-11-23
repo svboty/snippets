@@ -23,8 +23,8 @@ def snippets_page(request):
     return render(request, 'pages/view_snippets.html', context)
 
 
-def snippet_detail(request, id):
-    snippet = get_object_or_404(Snippet, pk=id)
+def snippet_detail(request, snippet_id):
+    snippet = get_object_or_404(Snippet, pk=snippet_id)
     context = {
         'pagename': 'Просмотр сниппета',
         'snippet': snippet
