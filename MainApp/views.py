@@ -1,5 +1,7 @@
 from django.contrib import auth
-from django.http import Http404, HttpResponseNotAllowed
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
+from django.http import Http404, HttpResponseNotAllowed, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, render, redirect
 
 from MainApp.models import Snippet
@@ -32,13 +34,18 @@ def add_snippet_page(request):
 
 
 def snippets_page(request):
-    if request.GET.get('my'):
+    my = request.GET.get('my')
+    lang = request.GET.get('lang')
+    if my:
         snippets = Snippet.objects.filter(user=request.user)
         page_name = 'Мои сниппеты'
     else:
-        snippets = Snippet.objects.all()
+        snippets = Snippet.objects.filter(public=True)
+        if request.user.is_authenticated:
+            snippets = snippets | Snippet.objects.filter(user=request.user)
         page_name = 'Просмотр сниппетов'
-    print(request.GET.get('my'))
+    if lang:
+        snippets = snippets.filter(lang=lang)
     context = {
         'pagename': page_name,
         'snippets': snippets
@@ -46,6 +53,7 @@ def snippets_page(request):
     return render(request, 'pages/view_snippets.html', context)
 
 
+@login_required(login_url='login')
 def snippet_update(request, snippet_id):
     if request.method == 'GET':
         snippet = get_object_or_404(Snippet, pk=snippet_id)
@@ -57,6 +65,8 @@ def snippet_update(request, snippet_id):
         return render(request, 'pages/add_snippet.html', context)
     elif request.method == 'POST':
         snippet = get_object_or_404(Snippet, pk=snippet_id)
+        if request.user != snippet.user:
+            raise PermissionDenied
         form = SnippetForm(request.POST, instance=snippet)
         if form.is_valid():
             form.save()
@@ -66,6 +76,7 @@ def snippet_update(request, snippet_id):
         return HttpResponseNotAllowed()
 
 
+@login_required(login_url='login')
 def snippet_delete(request, snippet_id):
     if request.method == 'GET':
         snippet = get_object_or_404(Snippet, pk=snippet_id)
@@ -78,6 +89,8 @@ def snippet_delete(request, snippet_id):
         return render(request, 'pages/delete_snippet.html', context)
     elif request.method == 'POST':
         snippet = get_object_or_404(Snippet, pk=snippet_id)
+        if request.user != snippet.user:
+            raise PermissionDenied
         snippet.delete()
         return redirect(to='snippets-list')
     else:
@@ -137,6 +150,7 @@ def registration(request):
         return redirect('home')
 
 
+@login_required(login_url='login')
 def comment_add(request):
     if request.method == "POST":
         comment_form = CommentForm(request.POST)

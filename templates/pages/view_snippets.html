@@ -10,12 +10,27 @@
         </div>
         <div class="row">
             <div class="col">
+                <form method="GET">
+                    <select name="lang" id="id_lang">
+                    <option value="" {% if not request.GET.lang %} selected {% endif %}>---------</option>
+                    <option value="py" {% if request.GET.lang == "py" %} selected {% endif %}>Python</option>
+                    <option value="js" {% if request.GET.lang == "js" %} selected {% endif %}>JavaScript</option>
+                    <option value="cpp" {% if request.GET.lang == "cpp" %} selected {% endif %}>C++</option>
+                </select>
+                <input type="hidden" value="{{ request.GET.my }}" name="my">
+                <button type="submit">Применить</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
                 <table class="table table-striped">
                     <thead class="thead-dark">
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Название</th>
                         <th scope="col">Дата создания</th>
+                        <th scope="col">Язык</th>
                         <th scope="col">Автор</th>
                     </tr>
                     </thead>
@@ -25,8 +40,18 @@
                         <td scope="row">{{ snippet.id }}</td>
                         <td>
                             <a href="{% url 'snippets-detail' snippet.id %}">{{ snippet.name }}</a>
+                            {% if request.user.is_authenticated and  request.user == snippet.user %}
+                                <a href={% url 'snippets-delete' snippet.id %}>
+                                    <i style="color: red" class="fa-solid fa-trash"></i>
+                                </a>
+
+                                <a href={% url 'snippets-update' snippet.id %}>
+                                    <i style="color: #0069d9" class="fa-solid fa-pen"></i>
+                                </a>
+                            {% endif %}
                         </td>
                         <td>{{ snippet.creation_date | date:"d.m.Y H:i" }}</td>
+                        <td>{{ snippet.get_lang_display }}</td>
                         <td>{{ snippet.user.username | default:"Anonimous"}}</td>
                     </tr>
                     {% endfor %}

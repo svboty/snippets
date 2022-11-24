@@ -31,18 +31,20 @@
             </div>
                 </fieldset>
                 <hr>
+            {% if request.user.is_authenticated and  request.user == snippet.user %}
                 <div class="row">
-                    <div class="col-2 offset-8">
-                        <a class="btn btn-outline-secondary" href={% url 'snippets-update' snippet.id %}>
-                            Изменить
+                    <div class="col-1 offset-10">
+                        <a href={% url 'snippets-update' snippet.id %}>
+                            <i style="color: red" class="fa-solid fa-trash"></i>
                         </a>
                     </div>
-                    <div class="col-2">
-                        <a class="btn btn-outline-secondary" href={% url 'snippets-delete' snippet.id %}>
-                            Удалить
+                    <div class="col-1">
+                        <a href={% url 'snippets-delete' snippet.id %}>
+                            <i style="color: #0069d9" class="fa-solid fa-pen"></i>
                         </a>
                     </div>
                 </div>
+            {% endif %}
                 <hr>
                 <div class="row">
                     <div class="col">

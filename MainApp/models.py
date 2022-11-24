@@ -14,7 +14,7 @@ class Snippet(models.Model):
     code = models.TextField(verbose_name='Код', max_length=5000)
     creation_date = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Автор')
-    public = models.BooleanField(verbose_name='Публичный', default=False)
+    public = models.BooleanField(verbose_name='Публичный', default=True)
 
 
 class Comment(models.Model):
