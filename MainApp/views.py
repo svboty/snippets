@@ -32,9 +32,15 @@ def add_snippet_page(request):
 
 
 def snippets_page(request):
-    snippets = Snippet.objects.all()
+    if request.GET.get('my'):
+        snippets = Snippet.objects.filter(user=request.user)
+        page_name = 'Мои сниппеты'
+    else:
+        snippets = Snippet.objects.all()
+        page_name = 'Просмотр сниппетов'
+    print(request.GET.get('my'))
     context = {
-        'pagename': 'Просмотр сниппетов',
+        'pagename': page_name,
         'snippets': snippets
     }
     return render(request, 'pages/view_snippets.html', context)
