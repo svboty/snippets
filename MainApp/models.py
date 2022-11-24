@@ -16,3 +16,9 @@ class Snippet(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Автор')
     public = models.BooleanField(verbose_name='Публичный', default=False)
 
+
+class Comment(models.Model):
+    text = models.TextField(max_length=2000)
+    creation_date = models.DateTimeField(auto_now=True)
+    author = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name='Автор', related_name='comments')
+    snippet = models.ForeignKey(to=Snippet, on_delete=models.CASCADE, verbose_name='Сниппет', related_name='comments')
