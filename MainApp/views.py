@@ -30,7 +30,7 @@ def add_snippet_page(request):
             return redirect(to='snippets-detail', snippet_id=instance.id)
         return render(request, 'add_snippet.html', {'form': form})
     else:
-        return HttpResponseNotAllowed()
+        return HttpResponseNotAllowed(permitted_methods='GET/POST')
 
 
 def snippets_page(request):
@@ -46,9 +46,19 @@ def snippets_page(request):
         page_name = 'Просмотр сниппетов'
     if lang:
         snippets = snippets.filter(lang=lang)
+    sort = request.GET.get("sort")
+    if sort == 'name':
+        snippets = snippets.order_by('name')
+        sort = '-name'
+    elif sort == '-name':
+        snippets = snippets.order_by('-name')
+        sort = None
+    elif sort is None:
+        sort = 'name'
     context = {
         'pagename': page_name,
-        'snippets': snippets
+        'snippets': snippets,
+        'sort': sort
     }
     return render(request, 'pages/view_snippets.html', context)
 
@@ -73,7 +83,7 @@ def snippet_update(request, snippet_id):
             return redirect(to='snippets-detail', snippet_id=snippet_id)
         return render(request, 'add_snippet.html', {'form': form})
     else:
-        return HttpResponseNotAllowed()
+        return HttpResponseNotAllowed(permitted_methods='GET/POST')
 
 
 @login_required(login_url='login')
@@ -94,16 +104,17 @@ def snippet_delete(request, snippet_id):
         snippet.delete()
         return redirect(to='snippets-list')
     else:
-        return HttpResponseNotAllowed()
+        return HttpResponseNotAllowed(permitted_methods='GET/POST')
 
 
-def snippet_detail(request, snippet_id):
+def snippet_detail(request, snippet_id, comment_form=None):
     try:
         snippet = Snippet.objects.prefetch_related('comments').get(pk=snippet_id)
     except Snippet.DoesNotExist:
         raise Http404
     comments = snippet.comments.all()
-    comment_form = CommentForm()
+    if comment_form is None:
+        comment_form = CommentForm()
     context = {
         'pagename': 'Просмотр сниппета',
         'snippet': snippet,
@@ -153,7 +164,7 @@ def registration(request):
 @login_required(login_url='login')
 def comment_add(request):
     if request.method == "POST":
-        comment_form = CommentForm(request.POST)
+        comment_form = CommentForm(request.POST, request.FILES)
         snippet_id = request.POST['snipped_id']
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
@@ -161,5 +172,6 @@ def comment_add(request):
             comment.snippet = Snippet.objects.get(id=snippet_id)
             comment.save()
             return redirect('snippets-detail', snippet_id)
-
-    return HttpResponseNotAllowed()
+        else:
+            return snippet_detail(request, snippet_id, comment_form)
+    return HttpResponseNotAllowed(permitted_methods='POST')

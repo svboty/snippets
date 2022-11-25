@@ -14,4 +14,8 @@ urlpatterns = [
     path('snippets/<int:snippet_id>/delete', views.snippet_delete, name='snippets-delete'),
     path('registration/', views.registration, name='registration'),
     path('comment/add/', views.comment_add, name="comment_add"),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(
+    settings.STATIC_URL, document_root=settings.STATIC_ROOT
+) + static(
+    settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+)

@@ -47,4 +47,21 @@ class UserRegistrationForm(ModelForm):
 class CommentForm(ModelForm):
     class Meta:
         model = Comment
-        fields = ['text', ]
+        fields = ['text', 'image']
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image', False)
+
+        if image:
+
+            # validate content type
+            main, sub = image.content_type.split('/')
+            if not (main == 'image' and sub.lower() in ['jpeg', 'pjpeg', 'png', 'jpg']):
+                raise ValidationError('Please use a JPEG or PNG image.')
+
+            # validate file size
+            if len(image) > (1 * 1024 * 1024):
+                raise ValidationError('Image file too large ( maximum 1mb )')
+        else:
+            raise ValidationError("Couldn't read uploaded image")
+        return image
