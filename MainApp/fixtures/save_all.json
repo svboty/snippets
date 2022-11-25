@@ -1,0 +1,183 @@
+[
+  {
+    "model": "MainApp.snippet",
+    "pk": 1,
+    "fields": {
+      "name": "Hello world Snippet",
+      "lang": "",
+      "code": "print(\"Hello world\")",
+      "creation_date": "2022-11-23T08:52:33.976Z",
+      "user": null,
+      "public": true
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 2,
+    "fields": {
+      "name": "Test Snippet",
+      "lang": "",
+      "code": "print(\"Test\")",
+      "creation_date": "2022-11-23T08:53:49.441Z",
+      "user": null,
+      "public": true
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 3,
+    "fields": {
+      "name": "Test Snippet",
+      "lang": "Python",
+      "code": "print(\"Test\")",
+      "creation_date": "2022-11-23T09:13:06.699Z",
+      "user": null,
+      "public": true
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 4,
+    "fields": {
+      "name": "js test",
+      "lang": "JavaScript",
+      "code": "code of JS",
+      "creation_date": "2022-11-23T10:22:49.649Z",
+      "user": null,
+      "public": true
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 5,
+    "fields": {
+      "name": "Омск",
+      "lang": "py",
+      "code": "sdfgsg\r\ndfsfsdfgsg\r\nвавпввпвп",
+      "creation_date": "2022-11-25T09:49:23.284Z",
+      "user": null,
+      "public": true
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "pk": 8,
+    "fields": {
+      "name": "sdsds",
+      "lang": "py",
+      "code": "wewewewe",
+      "creation_date": "2022-11-24T13:07:38.569Z",
+      "user": 1,
+      "public": true
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 1,
+    "fields": {
+      "text": "бла бла бла",
+      "creation_date": "2022-11-24T08:37:14.271Z",
+      "image": "",
+      "author": 3,
+      "snippet": 5
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 2,
+    "fields": {
+      "text": "45345345345",
+      "creation_date": "2022-11-24T08:43:41.531Z",
+      "image": "",
+      "author": 3,
+      "snippet": 5
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 3,
+    "fields": {
+      "text": "123151111",
+      "creation_date": "2022-11-24T16:42:42.881Z",
+      "image": "images/ozon.png",
+      "author": 1,
+      "snippet": 5
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 4,
+    "fields": {
+      "text": "787999",
+      "creation_date": "2022-11-24T16:43:01.908Z",
+      "image": "images/Rectangle_174.jpg",
+      "author": 1,
+      "snippet": 5
+    }
+  },
+  {
+    "model": "MainApp.comment",
+    "pk": 5,
+    "fields": {
+      "text": "5555555",
+      "creation_date": "2022-11-24T17:13:39.858Z",
+      "image": "images/Снимок_экрана_2022-10-25_в_10.51.51.png",
+      "author": 1,
+      "snippet": 5
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$390000$xvMMReP556YcA6cMbpa6I5$HqN22O5jk94smYCsUyLqUvYIfB30jbRi0S2B/cliMG0=",
+      "last_login": "2022-11-25T09:24:39.639Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2022-11-23T09:17:57.584Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$390000$ZTYVfHRdJLb9sGrSjnyMfn$KtYS0pbml9TXZRCVws+dqB08T97qItZRIA4Rfy1V54U=",
+      "last_login": "2022-11-23T14:19:44.929Z",
+      "is_superuser": false,
+      "username": "user1",
+      "first_name": "",
+      "last_name": "",
+      "email": "user1@mail.ru",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2022-11-23T14:18:07.938Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$390000$VcbiqiixG78IxJJD5ohtgz$XcWpNCf39oPBjtFRVpk1PwwHgOslyJL9kx2UhKOD5LE=",
+      "last_login": "2022-11-24T07:59:18.994Z",
+      "is_superuser": false,
+      "username": "user_test",
+      "first_name": "",
+      "last_name": "",
+      "email": "user_test@mail.ru",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2022-11-24T07:58:59.250Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

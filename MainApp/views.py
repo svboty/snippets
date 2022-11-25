@@ -47,14 +47,12 @@ def snippets_page(request):
     if lang:
         snippets = snippets.filter(lang=lang)
     sort = request.GET.get("sort", '')
-    if sort == 'name':
-        snippets = snippets.order_by('name')
-        sort = '-name'
-    elif sort == '-name':
-        snippets = snippets.order_by('-name')
-        sort = ''
-    elif sort == '':
-        sort = 'name'
+    if sort in ('name', '-name', 'lang', '-lang'):
+        snippets = snippets.order_by(sort)
+        if sort.startswith('-'):
+            sort = sort[1:]
+        else:
+            sort = f'-{sort}'
     context = {
         'pagename': page_name,
         'snippets': snippets,

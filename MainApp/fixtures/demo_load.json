@@ -1,0 +1,24 @@
+[
+  {
+    "model": "MainApp.snippet",
+    "fields": {
+      "name": "spam",
+      "lang": "py",
+      "code": "wewewewe",
+      "creation_date": "2022-11-24T13:07:38.569Z",
+      "user": 1,
+      "public": true
+    }
+  },
+  {
+    "model": "MainApp.snippet",
+    "fields": {
+      "name": "spam",
+      "lang": "py",
+      "code": "wewewewe",
+      "creation_date": "2022-11-24T13:07:38.569Z",
+      "user": 1,
+      "public": true
+    }
+  }
+]
