@@ -55,7 +55,7 @@
                         </td>
                         <td>{{ snippet.creation_date | date:"d.m.Y H:i" }}</td>
                         <td>{{ snippet.get_lang_display }}</td>
-                        <td>{{ snippet.user.username | default:"Anonimous"}}</td>
+                        <td>{{ snippet.user.username | default:"Anonymous"}}</td>
                     </tr>
                     {% endfor %}
 

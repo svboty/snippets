@@ -1,9 +1,11 @@
 from django.urls import path
+from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 from MainApp import views
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('', views.index_page, name='home'),
     path('login/', views.login_page, name='login'),
     path('logout/', views.logout_page, name='logout'),
