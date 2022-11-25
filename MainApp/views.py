@@ -46,15 +46,17 @@ def snippets_page(request):
         page_name = 'Просмотр сниппетов'
     if lang:
         snippets = snippets.filter(lang=lang)
-    sort = request.GET.get("sort")
+    sort = request.GET.get("sort", '')
     if sort == 'name':
         snippets = snippets.order_by('name')
         sort = '-name'
     elif sort == '-name':
         snippets = snippets.order_by('-name')
-        sort = None
-    elif sort is None:
+        sort = ''
+    elif sort == '':
         sort = 'name'
+    print(sort is None)
+    print(sort)
     context = {
         'pagename': page_name,
         'snippets': snippets,
