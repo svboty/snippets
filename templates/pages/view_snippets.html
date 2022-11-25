@@ -21,6 +21,20 @@
                 <button type="submit">Применить</button>
                 </form>
             </div>
+            {% if not request.GET.my %}
+            <div class="col">
+                <form method="GET">
+                <select name="user_id" id="id_user">
+                    <option value="" {% if not user_id %} selected {% endif %}>---------</option>
+                    {% for user in users %}
+                    <option value={{ user.id }} {% if user_id == user.id %} selected {% endif %}>{{ user.username }}</option>
+                    {% endfor %}
+                </select>
+                    <input type="hidden" value="{{ request.GET.sort }}" name="sort">
+                    <button type="submit">Применить</button>
+                </form>
+            </div>
+            {% endif %}
         </div>
         <div class="row">
             <div class="col">

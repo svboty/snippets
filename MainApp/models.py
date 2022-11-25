@@ -15,6 +15,7 @@ class Snippet(models.Model):
     creation_date = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Автор')
     public = models.BooleanField(verbose_name='Публичный', default=True)
+    marks = models.ManyToManyField(to=User, through='MainApp.Mark', related_name='marks')
 
 
 class Comment(models.Model):
@@ -23,3 +24,9 @@ class Comment(models.Model):
     image = models.ImageField(upload_to="images", blank=True, null=True)
     author = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name='Автор', related_name='comments')
     snippet = models.ForeignKey(to=Snippet, on_delete=models.CASCADE, verbose_name='Сниппет', related_name='comments')
+
+
+class Mark(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, verbose_name='Автор')
+    snippet = models.ForeignKey(to=Snippet, on_delete=models.CASCADE, verbose_name='Сниппет')
+    like = models.BooleanField(verbose_name='Нравится')

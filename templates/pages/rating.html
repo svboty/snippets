@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h1>{{ pagename }}</h1>
+                <hr>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col"><a {% if sort == '-name' or sort == 'name' %} href="?sort={{ sort }}" {% else %} href="?sort=name" {% endif %}>Пользователь</a>
+                            {% if sort == '-name' or sort == 'name' %}
+                            <a href="{{ request.path }}">
+                                    <i style="color: red" class="fa-solid fa-trash"></i>
+                            </a>
+                            {% endif %}
+                            {% if sort == "-name" %}<i class="fa-solid fa-sort-up"></i>{% endif %}
+                            {% if sort == "name" %}<i class="fa-solid fa-sort-down"></i>{% endif %}
+                        </th>
+                        <th scope="col">Всего сниппетов</th>
+                         <th scope="col"><a {% if sort == '-lang' or sort == 'lang' %} href="?sort={{ sort }}" {% else %} href="?sort=lang" {% endif %}>Всего комментариев</a>
+                         {% if sort == '-lang' or sort == 'lang' %}
+                            <a href="{{ request.path }}">
+                                    <i style="color: red" class="fa-solid fa-trash"></i>
+                            </a>
+                            {% endif %}
+                            {% if sort == "-lang" %}<i class="fa-solid fa-sort-up"></i>{% endif %}
+                            {% if sort == "lang" %}<i class="fa-solid fa-sort-down"></i>{% endif %}
+                        </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td scope="row">{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.snippets_count }}</td>
+                        <td>{{ user.comments_count }}</td>
+                    </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+                <div align="right">
+                    <i style="color: gray;">Всего сниппетов: {{ snippets_count }}</i>
+                </div>
+                <div align="right">
+                    <i style="color: gray;">Всего комментариев: {{ comments_count }}</i>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

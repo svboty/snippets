@@ -1,10 +1,12 @@
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
-from django.http import Http404, HttpResponseNotAllowed, HttpResponseForbidden
+from django.db.models import Count
+from django.http import Http404, HttpResponseNotAllowed
 from django.shortcuts import get_object_or_404, render, redirect
 
-from MainApp.models import Snippet
+from MainApp.models import Snippet, Comment, Mark
 from MainApp.forms import CommentForm, SnippetForm, UserRegistrationForm
 
 
@@ -36,9 +38,14 @@ def add_snippet_page(request):
 def snippets_page(request):
     my = request.GET.get('my')
     lang = request.GET.get('lang')
+    user_id = request.GET.get('user_id')
+    users = User.objects.annotate(num_snippets=Count('snippet')).filter(num_snippets__gte=1)
     if my:
-        snippets = Snippet.objects.filter(user=request.user)
-        page_name = 'Мои сниппеты'
+        if request.user.is_authenticated:
+            snippets = Snippet.objects.filter(user=request.user)
+            page_name = 'Мои сниппеты'
+        else:
+            return redirect(to='snippets-list')
     else:
         snippets = Snippet.objects.filter(public=True)
         if request.user.is_authenticated:
@@ -46,6 +53,9 @@ def snippets_page(request):
         page_name = 'Просмотр сниппетов'
     if lang:
         snippets = snippets.filter(lang=lang)
+    if user_id:
+        snippets = snippets.filter(user_id=user_id)
+        user_id = int(user_id)
     sort = request.GET.get("sort", '')
     if sort in ('name', '-name', 'lang', '-lang'):
         snippets = snippets.order_by(sort)
@@ -56,7 +66,9 @@ def snippets_page(request):
     context = {
         'pagename': page_name,
         'snippets': snippets,
-        'sort': sort
+        'sort': sort,
+        'users': users,
+        'user_id': user_id
     }
     return render(request, 'pages/view_snippets.html', context)
 
@@ -173,3 +185,35 @@ def comment_add(request):
         else:
             return snippet_detail(request, snippet_id, comment_form)
     return HttpResponseNotAllowed(permitted_methods='POST')
+
+
+def get_rating(request):
+    if request.method == 'GET':
+        users = User.objects.annotate(snippets_count=Count('snippet'), comments_count=Count('comments'))
+        snippets_count = Snippet.objects.all().count()
+        comments_count = Comment.objects.all().count()
+        context = {
+            "pagename": 'Рейтинг',
+            "users": users,
+            "comments_count": comments_count,
+            "snippets_count": snippets_count
+        }
+        return render(request, 'pages/rating.html', context)
+
+
+@login_required(login_url='login')
+def snippet_mark(request, snippet_id, like):
+    if request.method == 'POST':
+        if like:
+            like = True
+        else:
+            like = False
+        # snippet = Snippet.objects.get(pk=)
+        Mark.objects.create(user=request.user, snippet_id=snippet_id, like=like)
+        print("********")
+        return redirect(to='snippets-detail')
+    raise Http404
+
+
+
+

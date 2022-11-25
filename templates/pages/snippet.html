@@ -44,6 +44,19 @@
                         </a>
                     </div>
                 </div>
+            {% elif  request.user.is_authenticated  %}
+              <div class="row">
+                    <div class="col-1 ">
+                        <a href={% url 'add-mark' snippet.id 1 %}>
+                            <i style="color: red" class="fa-solid fa-thumbs-up"></i></i>
+                        </a>
+                    </div>
+                    <div class="col-1">
+                        <a href={% url 'add-mark' snippet.id 0 %}>
+                            <i style="color: #0069d9" class="fa-solid fa-thumbs-down"></i></i>
+                        </a>
+                    </div>
+                </div>
             {% endif %}
                 <hr>
                 <div class="row">
