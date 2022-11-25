@@ -55,8 +55,6 @@ def snippets_page(request):
         sort = ''
     elif sort == '':
         sort = 'name'
-    print(sort is None)
-    print(sort)
     context = {
         'pagename': page_name,
         'snippets': snippets,
